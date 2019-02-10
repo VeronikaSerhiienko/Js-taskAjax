@@ -11,7 +11,7 @@
 
 ## Task3
 
-Получить список посетителей [с](https://tanuhaua.github.io/datas-file-json/visitors.json) и отобразить в виде таблицы со столбцами
+Получить список посетителей [с](https://tanuhaua.github.io/datas-file-json/visitors.json) и отобразить в виде таблицы со столбцами:
 
 * Visitor id
 * Registration date (в формате YYYY.MM.DD)
@@ -30,14 +30,15 @@
 Внизу есть кнопка "Показать больше".
 При нажатии на кнопку "Показать больше" должно отображаться еще 20 строк.
 Когда данных больше нет - прятать кнопку.
-Запросы за данными выполнять по [адресу](https://tanuhaua.github.io/datas-file-json/dynamic-loading/1/users.json)
- - 1-20 пользователей, по
- [адресу](https://tanuhaua.github.io/datas-file-json/dynamic-loading/2/users.json)
- - 21-40 пользователей
+Запросы за данными выполнять:
+  по [адресу](https://tanuhaua.github.io/datas-file-json/dynamic-loading/1/users.json) 1-20 пользователей, 
+  по [адресу](https://tanuhaua.github.io/datas-file-json/dynamic-loading/2/users.json) 21-40 пользователей
 и т.д.
 Структура ответа ("loadMore" показывает есть ли еще данные):
-```{
+```
+{
 "page": 4,
 "loadMore": false,
 "data": [{},{}]
-}```
+}
+```
