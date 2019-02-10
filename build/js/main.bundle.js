@@ -112,7 +112,7 @@ var CardsRequest = function CardsRequest() {
 
 
 
-function showCards(obj) {
+var showCards = function showCards(obj) {
   var blockOfCards = document.createElement('div');
   blockOfCards.className = 'cards';
   document.body.appendChild(blockOfCards);
@@ -180,29 +180,29 @@ function showCards(obj) {
   middleFemaleAge.innerHTML = '<span class = "statistics__subtitle"> Average female age: </span>' + calculateAverageAge(obj, 'f') + ' years old';
   middleFemaleAge.className = 'statistics__description';
   statisticsBlock.appendChild(middleFemaleAge);
-}
+};
 
-function calculateAge(person) {
+var calculateAge = function calculateAge(person) {
   return person.died - person.born;
-}
+};
 
-function male(person) {
+var male = function male(person) {
   return person.sex === 'm';
-}
+};
 
-function female(person) {
+var female = function female(person) {
   return person.sex === 'f';
-}
+};
 
-function average(array) {
-  function plus(a, b) {
+var average = function average(array) {
+  var plus = function plus(a, b) {
     return a + b;
-  }
+  };
 
   return Math.floor(array.reduce(plus) / array.length);
-}
+};
 
-function calculateAverageDifferenceBetweenMothersAndChildren(obj) {
+var calculateAverageDifferenceBetweenMothersAndChildren = function calculateAverageDifferenceBetweenMothersAndChildren(obj) {
   var ageCounter = [];
 
   for (var i = 0; i < obj.length; i++) {
@@ -216,15 +216,15 @@ function calculateAverageDifferenceBetweenMothersAndChildren(obj) {
   }
 
   return average(ageCounter);
-}
+};
 
-function calculateAverageAge(obj, sex) {
+var calculateAverageAge = function calculateAverageAge(obj, sex) {
   if (sex === 'm') {
     return average(obj.filter(male).map(calculateAge));
   } else {
     return average(obj.filter(female).map(calculateAge));
   }
-}
+};
 
 /***/ }),
 
