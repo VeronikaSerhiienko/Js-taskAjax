@@ -11,7 +11,7 @@
 
 ## Task3
 
-Получить список посетителей [с](https://tanuhaua.github.io/datas-file-json/visitors.json) и отобразить в виде таблицы со столбцами:
+Получить список посетителей с [адреса](https://tanuhaua.github.io/datas-file-json/visitors.json) и отобразить в виде таблицы со столбцами:
 
 * Visitor id
 * Registration date (в формате YYYY.MM.DD)
