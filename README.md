@@ -1,15 +1,15 @@
 # Js-taskAjax
 [i`m a github pages](https://veronikaserhiienko.github.io/Js-taskAjax/build)
 
-#H2 Task1
+# H2 Task1
 
 Отправить XMLHttpRequest по [адресу](https://mate-academy.github.io/phone-catalogue-static/phones/phones.json) и получить данные. Вывести полученные данные в консоль.
 
-#H2 Task2
+# H2 Task2
 
 Переписать последнее задание с "Homework - JS6 - DOM" про галлерею карточек таким образом, чтобы данные для карточек получать в запросе по [адресу](https://tanuhaua.github.io/datas-file-json/data.json)
 
-#H2 Task3
+# H2 Task3
 
 Получить список посетителей [с](https://tanuhaua.github.io/datas-file-json/visitors.json) и отобразить в виде таблицы со столбцами
 
@@ -23,7 +23,7 @@
 
 По умолчанию отсортировать по Visitor id.
 
-#H2 Task4 
+# H2 Task4 
 
 Организовать динамическую загрузку и отображение данных.
 Необходимо отображать список пользователей по 20 строк.
