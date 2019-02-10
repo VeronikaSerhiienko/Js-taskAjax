@@ -30,7 +30,7 @@ gulp.task('serve', ['sass'], function() {
 });
 
 gulp.task('copy', function(){
-  return gulp.src(['src/**/*.*', '!src/scss/**/*.*'])
+  return gulp.src(['src/**/*.*', '!src/scss/**/*.*', '!src/scripts/**/*.*'])
   .pipe(gulp.dest('build/'));
 });
 

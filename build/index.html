@@ -2,9 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Document123</title>
+  <title>Js-taskAjax</title>
+  <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
-  <script src="main.bundle.js" type="module"></script>
+  <table class="js-visitors-table table-block">
+    <tr>
+      <th class="js-visitors-table-header table-block__header table-block__flag" data-field="id" data-order="asc">Visitor id      
+      </th>
+      <th class="js-visitors-table-header table-block__header" data-field="createdAt" data-order="desc">Registration date
+      </th>
+      <th class="js-visitors-table-header table-block__header" data-field="name" data-order="desc">Name
+      </th>
+      <th class="js-visitors-table-header table-block__header" data-field="email" data-order="desc">Email
+      </th>
+      <th class="js-visitors-table-header table-block__header" data-field="description" data-order="desc">Description
+      </th>
+    </tr>
+  </table>
+  <table class="js-users-table table-block table-block">
+    <tr>
+      <th class="js-users-table-header table-block__header" data-field="id" data-order="asc">User id      
+      </th>
+      <th class="js-users-table-header table-block__header" data-field="createdAt" data-order="desc">Registration date
+      </th>
+      <th class="js-users-table-header table-block__header" data-field="name" data-order="desc">Name
+      </th>
+      <th class="js-users-table-header table-block__header" data-field="email" data-order="desc">Email
+      </th>
+      <th class="js-users-table-header table-block__header" data-field="description" data-order="desc">Description
+      </th>
+    </tr>
+  </table>
+  <button type="button" class="js-button-show-more table-block__button">Show more</button>
+  <script src="js/main.bundle.js" type="module"></script>
 </body>
 </html>
