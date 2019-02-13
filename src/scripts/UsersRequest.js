@@ -1,4 +1,5 @@
-let users;
+import {ConvertDateFormat} from "./ConvertDateFormat";
+
 const UsersRequest = () => {
   let page = 1;
   showMoreUsers();
@@ -7,29 +8,16 @@ const UsersRequest = () => {
   function showMoreUsers() {
     let requestLink = `https://tanuhaua.github.io/datas-file-json/dynamic-loading/${page}/users.json`; 
     const requestForUsers = new XMLHttpRequest();
-    requestForUsers.open('Get', requestLink);
+    requestForUsers.open('GET', requestLink);
     requestForUsers.send();
     requestForUsers.onload = () => {
       if (requestForUsers.status != 200) {
         console.log(requestForUsers.status + ': ' + requestForUsers.statusText );
       } else {
-        users = JSON.parse(requestForUsers.responseText, (key,value) => {
-          if (key === 'createdAt') {
-            const d = new Date(value);
-            let month = '' + (d.getMonth() + 1);
-            let day = '' + d.getDate();
-            const year = d.getFullYear();
-
-            if (month.length < 2) month = '0' + month;
-            if (day.length < 2) day = '0' + day;
-
-            return [year, month, day].join('.');
-          }
-          return value;
-        });
+        let users = JSON.parse(requestForUsers.responseText, ConvertDateFormat);
         page = users.page + 1; 
         showUsersTable(users);
-        disableButton(showMoreButton);     
+        disableButton(users, showMoreButton);     
       }
     };
   }
@@ -50,8 +38,8 @@ const showUsersTable = (ArrayOfObjects) => {
   });
 };
 
-const disableButton = (button) => {
-  if (!users.loadMore) {
+const disableButton = (dataArray, button) => {
+  if (!dataArray.loadMore) {
     button.disabled = true;
     button.classList.add('table-block__button--disabled');
   }

@@ -228,6 +228,34 @@ var calculateAverageAge = function calculateAverageAge(obj, sex) {
 
 /***/ }),
 
+/***/ "./src/scripts/ConvertDateFormat.js":
+/*!******************************************!*\
+  !*** ./src/scripts/ConvertDateFormat.js ***!
+  \******************************************/
+/*! exports provided: ConvertDateFormat */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ConvertDateFormat", function() { return ConvertDateFormat; });
+var ConvertDateFormat = function ConvertDateFormat(key, value) {
+  if (key === 'createdAt') {
+    var d = new Date(value);
+    var month = '' + (d.getMonth() + 1);
+    var day = '' + d.getDate();
+    var year = d.getFullYear();
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    return [year, month, day].join('.');
+  }
+
+  return value;
+};
+
+
+
+/***/ }),
+
 /***/ "./src/scripts/FirstRequest.js":
 /*!*************************************!*\
   !*** ./src/scripts/FirstRequest.js ***!
@@ -266,7 +294,8 @@ var FirstRequest = function FirstRequest() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UsersRequest", function() { return UsersRequest; });
-var users;
+/* harmony import */ var _ConvertDateFormat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ConvertDateFormat */ "./src/scripts/ConvertDateFormat.js");
+
 
 var UsersRequest = function UsersRequest() {
   var page = 1;
@@ -277,29 +306,17 @@ var UsersRequest = function UsersRequest() {
   function showMoreUsers() {
     var requestLink = "https://tanuhaua.github.io/datas-file-json/dynamic-loading/".concat(page, "/users.json");
     var requestForUsers = new XMLHttpRequest();
-    requestForUsers.open('Get', requestLink);
+    requestForUsers.open('GET', requestLink);
     requestForUsers.send();
 
     requestForUsers.onload = function () {
       if (requestForUsers.status != 200) {
         console.log(requestForUsers.status + ': ' + requestForUsers.statusText);
       } else {
-        users = JSON.parse(requestForUsers.responseText, function (key, value) {
-          if (key === 'createdAt') {
-            var d = new Date(value);
-            var month = '' + (d.getMonth() + 1);
-            var day = '' + d.getDate();
-            var year = d.getFullYear();
-            if (month.length < 2) month = '0' + month;
-            if (day.length < 2) day = '0' + day;
-            return [year, month, day].join('.');
-          }
-
-          return value;
-        });
+        var users = JSON.parse(requestForUsers.responseText, _ConvertDateFormat__WEBPACK_IMPORTED_MODULE_0__["ConvertDateFormat"]);
         page = users.page + 1;
         showUsersTable(users);
-        disableButton(showMoreButton);
+        disableButton(users, showMoreButton);
       }
     };
   }
@@ -320,8 +337,8 @@ var showUsersTable = function showUsersTable(ArrayOfObjects) {
   });
 };
 
-var disableButton = function disableButton(button) {
-  if (!users.loadMore) {
+var disableButton = function disableButton(dataArray, button) {
+  if (!dataArray.loadMore) {
     button.disabled = true;
     button.classList.add('table-block__button--disabled');
   }
@@ -341,39 +358,33 @@ var disableButton = function disableButton(button) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VisitorsRequest", function() { return VisitorsRequest; });
-var visitors;
+/* harmony import */ var _ConvertDateFormat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ConvertDateFormat */ "./src/scripts/ConvertDateFormat.js");
+
 
 var VisitorsRequest = function VisitorsRequest() {
   var requestForVisitors = new XMLHttpRequest();
-  requestForVisitors.open('Get', 'https://tanuhaua.github.io/datas-file-json/visitors.json');
+  requestForVisitors.open('GET', 'https://tanuhaua.github.io/datas-file-json/visitors.json');
   requestForVisitors.send();
 
   requestForVisitors.onload = function () {
     if (requestForVisitors.status != 200) {
       console.log(requestForVisitors.status + ': ' + requestForVisitors.statusText);
     } else {
-      visitors = JSON.parse(requestForVisitors.responseText, function (key, value) {
-        if (key === 'createdAt') {
-          var d = new Date(value);
-          var month = '' + (d.getMonth() + 1);
-          var day = '' + d.getDate();
-          var year = d.getFullYear();
-          if (month.length < 2) month = '0' + month;
-          if (day.length < 2) day = '0' + day;
-          return [year, month, day].join('.');
-        }
+      var _visitors = JSON.parse(requestForVisitors.responseText, _ConvertDateFormat__WEBPACK_IMPORTED_MODULE_0__["ConvertDateFormat"]);
 
-        return value;
-      });
-      sortTable('id', 'asc');
-      showVisitorsTable(visitors);
+      sortTable(_visitors, 'id', 'asc');
+      showVisitorsTable(_visitors);
     }
   };
 };
 
-var sortTable = function sortTable(field, order) {
+var sortTable = function sortTable(dataArray, field, order) {
+  console.dir(dataArray);
+  console.dir(field);
+  console.dir(order);
+
   if (field === 'createdAt') {
-    visitors.sort(function (a, b) {
+    dataArray.sort(function (a, b) {
       var dateA = new Date(a[field].replace(/\./g, '/'));
       var dateB = new Date(b[field].replace(/\./g, '/'));
 
@@ -384,7 +395,7 @@ var sortTable = function sortTable(field, order) {
       }
     });
   } else {
-    visitors.sort(function (a, b) {
+    dataArray.sort(function (a, b) {
       var elemA = a[field].toLowerCase();
       var elemB = b[field].toLowerCase();
       var sortingTypeIndex = -1;
@@ -419,7 +430,7 @@ var sortTableField = function sortTableField(event) {
 
   var orderSort = event.target.getAttribute('data-order');
   var field = event.target.getAttribute('data-field');
-  sortTable(field, orderSort);
+  sortTable(visitors, field, orderSort);
   showVisitorsTable(visitors);
 };
 

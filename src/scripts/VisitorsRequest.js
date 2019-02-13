@@ -1,35 +1,26 @@
-let visitors;
+import {ConvertDateFormat} from "./ConvertDateFormat";
+
 const VisitorsRequest = () => {
   const requestForVisitors = new XMLHttpRequest();
-  requestForVisitors.open('Get', 'https://tanuhaua.github.io/datas-file-json/visitors.json');
+  requestForVisitors.open('GET', 'https://tanuhaua.github.io/datas-file-json/visitors.json');
   requestForVisitors.send();
   requestForVisitors.onload = () => {
     if (requestForVisitors.status != 200) {
       console.log(requestForVisitors.status + ': ' + requestForVisitors.statusText );
     } else {
-      visitors = JSON.parse(requestForVisitors.responseText, (key,value) => {
-        if (key === 'createdAt') {
-          const d = new Date(value);
-          let month = '' + (d.getMonth() + 1);
-          let day = '' + d.getDate();
-          const year = d.getFullYear();
-
-          if (month.length < 2) month = '0' + month;
-          if (day.length < 2) day = '0' + day;
-
-          return [year, month, day].join('.');
-        }
-        return value;
-      });
-      sortTable('id', 'asc'); 
+      let visitors = JSON.parse(requestForVisitors.responseText, ConvertDateFormat);
+      sortTable(visitors, 'id', 'asc'); 
       showVisitorsTable(visitors);     
     }
   };
 };
 
-const sortTable = (field, order) => {
+const sortTable = (dataArray, field, order) => {
+  console.dir(dataArray);
+  console.dir(field);
+  console.dir(order);
   if (field === 'createdAt') {
-    visitors.sort(function(a, b) {
+    dataArray.sort(function(a, b) {
       const dateA = new Date(a[field].replace(/\./g,'/'));
       const dateB = new Date(b[field].replace(/\./g,'/'));
       if (order === 'asc') {
@@ -39,7 +30,7 @@ const sortTable = (field, order) => {
       }
     }); 
   } else {
-    visitors.sort(function(a, b) {
+    dataArray.sort(function(a, b) {
       const elemA = a[field].toLowerCase();
       const elemB = b[field].toLowerCase();
       let sortingTypeIndex = -1;
@@ -69,7 +60,7 @@ const sortTableField = (event)  => {
   }
   const orderSort = event.target.getAttribute('data-order');
   const field = event.target.getAttribute('data-field');
-  sortTable(field, orderSort);
+  sortTable(visitors, field, orderSort);
   showVisitorsTable(visitors);
 };
 
