@@ -370,19 +370,18 @@ var VisitorsRequest = function VisitorsRequest() {
     if (requestForVisitors.status != 200) {
       console.log(requestForVisitors.status + ': ' + requestForVisitors.statusText);
     } else {
-      var _visitors = JSON.parse(requestForVisitors.responseText, _ConvertDateFormat__WEBPACK_IMPORTED_MODULE_0__["ConvertDateFormat"]);
-
-      sortTable(_visitors, 'id', 'asc');
-      showVisitorsTable(_visitors);
+      var visitors = JSON.parse(requestForVisitors.responseText, _ConvertDateFormat__WEBPACK_IMPORTED_MODULE_0__["ConvertDateFormat"]);
+      var tableHeaders = document.querySelectorAll('.js-visitors-table-header');
+      tableHeaders.forEach(function (heading) {
+        heading.addEventListener('click', sortTableField(visitors, tableHeaders));
+      });
+      sortTable(visitors, 'id', 'asc');
+      showVisitorsTable(visitors);
     }
   };
 };
 
 var sortTable = function sortTable(dataArray, field, order) {
-  console.dir(dataArray);
-  console.dir(field);
-  console.dir(order);
-
   if (field === 'createdAt') {
     dataArray.sort(function (a, b) {
       var dateA = new Date(a[field].replace(/\./g, '/'));
@@ -417,27 +416,24 @@ var sortTable = function sortTable(dataArray, field, order) {
   }
 };
 
-var sortTableField = function sortTableField(event) {
-  if (event.target.getAttribute('data-order') === 'asc') {
-    event.target.setAttribute('data-order', 'desc');
-    removeFlag();
-    addFlagDesc(event.target);
-  } else {
-    event.target.setAttribute('data-order', 'asc');
-    removeFlag();
-    addFlagAsc(event.target);
-  }
+var sortTableField = function sortTableField(visitors, tableHeaders) {
+  return function (event) {
+    if (event.target.getAttribute('data-order') === 'asc') {
+      event.target.setAttribute('data-order', 'desc');
+      removeFlag(tableHeaders);
+      addFlagDesc(event.target);
+    } else {
+      event.target.setAttribute('data-order', 'asc');
+      removeFlag(tableHeaders);
+      addFlagAsc(event.target);
+    }
 
-  var orderSort = event.target.getAttribute('data-order');
-  var field = event.target.getAttribute('data-field');
-  sortTable(visitors, field, orderSort);
-  showVisitorsTable(visitors);
+    var orderSort = event.target.getAttribute('data-order');
+    var field = event.target.getAttribute('data-field');
+    sortTable(visitors, field, orderSort);
+    showVisitorsTable(visitors);
+  };
 };
-
-var tableHeaders = document.querySelectorAll('.js-visitors-table-header');
-tableHeaders.forEach(function (heading) {
-  heading.addEventListener('click', sortTableField);
-});
 
 var showVisitorsTable = function showVisitorsTable(ArrayOfObjects) {
   var table = document.querySelector('.js-visitors-table');
@@ -470,7 +466,7 @@ var addFlagAsc = function addFlagAsc(element) {
   element.classList.add('table-block__flag');
 };
 
-var removeFlag = function removeFlag() {
+var removeFlag = function removeFlag(tableHeaders) {
   tableHeaders.forEach(function (heading) {
     heading.classList.remove('table-block__flag');
     heading.classList.remove('table-block__flag--desc');

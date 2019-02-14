@@ -14,7 +14,7 @@ const UsersRequest = () => {
       if (requestForUsers.status != 200) {
         console.log(requestForUsers.status + ': ' + requestForUsers.statusText );
       } else {
-        let users = JSON.parse(requestForUsers.responseText, ConvertDateFormat);
+        const users = JSON.parse(requestForUsers.responseText, ConvertDateFormat);
         page = users.page + 1; 
         showUsersTable(users);
         disableButton(users, showMoreButton);     

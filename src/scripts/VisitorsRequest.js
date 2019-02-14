@@ -1,5 +1,6 @@
 import {ConvertDateFormat} from "./ConvertDateFormat";
 
+
 const VisitorsRequest = () => {
   const requestForVisitors = new XMLHttpRequest();
   requestForVisitors.open('GET', 'https://tanuhaua.github.io/datas-file-json/visitors.json');
@@ -8,7 +9,11 @@ const VisitorsRequest = () => {
     if (requestForVisitors.status != 200) {
       console.log(requestForVisitors.status + ': ' + requestForVisitors.statusText );
     } else {
-      let visitors = JSON.parse(requestForVisitors.responseText, ConvertDateFormat);
+      const visitors = JSON.parse(requestForVisitors.responseText, ConvertDateFormat);
+      const tableHeaders = document.querySelectorAll('.js-visitors-table-header');
+      tableHeaders.forEach((heading) => {
+        heading.addEventListener('click', sortTableField(visitors, tableHeaders));
+      });
       sortTable(visitors, 'id', 'asc'); 
       showVisitorsTable(visitors);     
     }
@@ -16,9 +21,6 @@ const VisitorsRequest = () => {
 };
 
 const sortTable = (dataArray, field, order) => {
-  console.dir(dataArray);
-  console.dir(field);
-  console.dir(order);
   if (field === 'createdAt') {
     dataArray.sort(function(a, b) {
       const dateA = new Date(a[field].replace(/\./g,'/'));
@@ -48,26 +50,22 @@ const sortTable = (dataArray, field, order) => {
   }
 }; 
 
-const sortTableField = (event)  => {
-  if (event.target.getAttribute('data-order') === 'asc') {
-    event.target.setAttribute('data-order', 'desc');
-    removeFlag();
-    addFlagDesc(event.target);
-  } else {
-    event.target.setAttribute('data-order', 'asc');
-    removeFlag();
-    addFlagAsc(event.target);
-  }
-  const orderSort = event.target.getAttribute('data-order');
-  const field = event.target.getAttribute('data-field');
-  sortTable(visitors, field, orderSort);
-  showVisitorsTable(visitors);
+const sortTableField = (visitors, tableHeaders)  => (event)  => {
+    if (event.target.getAttribute('data-order') === 'asc') {
+      event.target.setAttribute('data-order', 'desc');
+      removeFlag(tableHeaders);
+      addFlagDesc(event.target);
+    } else {
+      event.target.setAttribute('data-order', 'asc');
+      removeFlag(tableHeaders);
+      addFlagAsc(event.target);
+    }
+    const orderSort = event.target.getAttribute('data-order');
+    const field = event.target.getAttribute('data-field');
+    sortTable(visitors, field, orderSort);
+    showVisitorsTable(visitors);
 };
 
-const tableHeaders = document.querySelectorAll('.js-visitors-table-header');
-tableHeaders.forEach((heading) => {
-  heading.addEventListener('click', sortTableField);
-});
 
 const showVisitorsTable = (ArrayOfObjects) => {
   const table = document.querySelector('.js-visitors-table');
@@ -100,7 +98,7 @@ const addFlagAsc = (element) => {
   element.classList.add('table-block__flag');
 };
 
-const removeFlag = () => {
+const removeFlag = (tableHeaders) => {
   tableHeaders.forEach(function(heading) {
     heading.classList.remove('table-block__flag');
     heading.classList.remove('table-block__flag--desc');
